@@ -26,17 +26,17 @@ class Cart extends Component {
   render() {
     let cartItems;
     cartItems = this.state.cart.map(item => {
-      return ( //all cart item attributes
+      return ( //all cart item attributes, aggregator info, and remove (x) buttons
         <li className="cart-item" key={item.name}>
           <img className="item-image" alt="" src={item.image} />
           <div>
             <p className="item-name">{item.name}</p>
             <p className="item-price">${item.price}</p>
           </div>
-          <div> //aggregator
+          <div>
             <p>{"Qty:"} {item.quantity} {" "}</p>
             <p>{"Total: $"}{item.quantity * item.price}</p>
-          </div> //remove button
+          </div>
           <a className="item-remove" href="#" onClick={this.props.removeProduct.bind(this, item.id)}>
             ×
           </a>
@@ -61,7 +61,7 @@ class Cart extends Component {
                 <td><b>{this.props.totalItems}</b></td>
               </tr>
               <tr>
-                <td>Total: </td> 
+                <td>Total: </td>
                 <td><b>{this.props.total}</b></td>
               </tr>
             </tbody>
