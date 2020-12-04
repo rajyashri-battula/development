@@ -57,11 +57,11 @@ class Cart extends Component {
           <table>
             <tbody>
               <tr>
-                <td>No. of items: </td> //aggregator
+                <td>No. of items: </td>
                 <td><b>{this.props.totalItems}</b></td>
               </tr>
               <tr>
-                <td>Total: </td> //main aggregator 
+                <td>Total: </td> 
                 <td><b>{this.props.total}</b></td>
               </tr>
             </tbody>
