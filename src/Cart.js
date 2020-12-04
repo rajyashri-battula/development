@@ -26,69 +26,51 @@ class Cart extends Component {
   render() {
     let cartItems;
     cartItems = this.state.cart.map(item => {
-      return (
+      return ( //all cart item attributes
         <li className="cart-item" key={item.name}>
-          <img className="item-image" alt = "cart items" src={item.image} />
-          <div className="item-info">
+          <img className="item-image" alt="" src={item.image} />
+          <div>
             <p className="item-name">{item.name}</p>
-            <p className="item-price">{item.price}</p>
+            <p className="item-price">${item.price}</p>
           </div>
-          <div className="item-total">
-            <p className="quantity">
-              {"Qty"} {item.quantity} {" "}
-            </p>
-            <p className="amount">{item.quantity * item.price}</p>
-          </div>
-          <a
-            className="item-remove"
-            href="#"
-            onClick={this.props.removeProduct.bind(this, item.id)}
-          >
+          <div> //aggregator
+            <p>{"Qty:"} {item.quantity} {" "}</p>
+            <p>{"Total: $"}{item.quantity * item.price}</p>
+          </div> //remove button
+          <a className="item-remove" href="#" onClick={this.props.removeProduct.bind(this, item.id)}>
             ×
           </a>
         </li>
       );
     });
-    let view;
+    let view; //empty cart rendering
     if (cartItems.length <= 0) {view = <img width = "95%" src ="images/cart_empty.png" alt="empty-cart"/>;
-    } else {
+  } else { //non-empty cart rendering
       view = (
-        <ul className="cart-items">
+        <ul>
           {cartItems}
         </ul>
       );
     }
     return (
       <div className="container">
-        <div className="cart">
-          <div className="cart-info">
-            <table>
-              <tbody>
-                <tr>
-                  <td>No. of items</td>
-                  <td>:</td>
-                  <td>
-                    <strong>{this.props.totalItems}</strong>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Sub Total</td>
-                  <td>:</td>
-                  <td>
-                    <strong>{this.props.total}</strong>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div
-            className="cart-view"
-          >
+          <table>
+            <tbody>
+              <tr>
+                <td>No. of items: </td> //aggregator
+                <td><b>{this.props.totalItems}</b></td>
+              </tr>
+              <tr>
+                <td>Total: </td> //main aggregator 
+                <td><b>{this.props.total}</b></td>
+              </tr>
+            </tbody>
+          </table>
+          <div className="cart-view">
           <Scrollbars style={{ width: 360, height: 320 }} ref="scrollbars">
             {this.props.children}{view}
           </Scrollbars>
           </div>
-        </div>
       </div>
     );
   }

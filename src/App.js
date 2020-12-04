@@ -3,19 +3,19 @@ import './App.css';
 import FilteredList from './FilteredList.js';
 import Cart from "./Cart";
 
-const clothes = [
-  {id: 1, name: "Halter Neck", type: "Shirt", occasion: "Party", price: 27, added: "no"},
-  {id: 2, name: "Spaghetti Top", type:"Shirt", occasion: "Party", price: 19, added: "no"},
-  {id: 3, name: "Cargo Pants", type:"Bottoms", occasion: "Casual", price: 45, added: "no"},
-  {id: 4, name: "LBD", type:"Dress", occasion: "Party", price: 38, added: "no"},
-  {id: 5, name: "Beach Dress", type:"Dress", occasion: "Casual", price: 35, added: "no"},
-  {id: 6, name: "Peplum Top", type: "Shirt", occasion: "Party", price: 52, added: "no"},
-  {id: 7, name: "Midi Dress", type: "Dress", occasion: "Party", price: 49, added: "no"},
-  {id: 8, name: "Fit and Flare", type: "Dress", occasion: "Party", price: 28, added: "no"},
-  {id: 9, name: "Satin Skirt", type: "Bottoms", occasion: "Party", price: 41, added: "no"},
-  {id: 10, name: "Denim Skirt", type: "Bottoms", occasion: "Casual", price: 34, added: "no"},
-  {id: 11, name: "Blouse", type: "Shirt", occasion: "Work", price: 50, added: "no"},
-  {id: 12, name: "Denim Jeans", type: "Bottoms", occasion: "Casual", price: 44, added: "no"}
+const clothes = [ //product list, passed into FilteredList
+  {id: 1, name: "Halter Neck", type: "Shirt", occasion: "Party", price: 27},
+  {id: 2, name: "Spaghetti Top", type:"Shirt", occasion: "Party", price: 19},
+  {id: 3, name: "Cargo Pants", type:"Bottoms", occasion: "Casual", price: 45},
+  {id: 4, name: "LBD", type:"Dress", occasion: "Party", price: 38},
+  {id: 5, name: "Beach Dress", type:"Dress", occasion: "Casual", price: 35},
+  {id: 6, name: "Peplum Top", type: "Shirt", occasion: "Party", price: 52},
+  {id: 7, name: "Midi Dress", type: "Dress", occasion: "Party", price: 49},
+  {id: 8, name: "Fit and Flare", type: "Dress", occasion: "Party", price: 28},
+  {id: 9, name: "Satin Skirt", type: "Bottoms", occasion: "Party", price: 41},
+  {id: 10, name: "Denim Skirt", type: "Bottoms", occasion: "Casual", price: 34},
+  {id: 11, name: "Blouse", type: "Shirt", occasion: "Work", price: 50},
+  {id: 12, name: "Denim Jeans", type: "Bottoms", occasion: "Casual", price: 44}
 ];
 
 
@@ -27,21 +27,17 @@ class App extends Component {
       cart: [],
       totalItems: 0,
       totalAmount: 0,
-      term: "",
       category: "",
-      cartBounce: false,
-      quantity: 1,
-      quickViewProduct: {},
-      modalActive: false
+      quantity: 1
     };
-    this.handleAddToCart = this.handleAddToCart.bind(this);
+    this.addToCart = this.addToCart.bind(this); //bunch of functions to handle adding and removing to cart, and totaling of quantity and price
     this.sumTotalItems = this.sumTotalItems.bind(this);
     this.sumTotalAmount = this.sumTotalAmount.bind(this);
-    this.handleRemoveProduct = this.handleRemoveProduct.bind(this);
+    this.removeProduct = this.removeProduct.bind(this);
     this.checkProduct = this.checkProduct.bind(this);
   };
 
-  checkProduct(productID) {
+  checkProduct(productID) { //to check if item already exists in cart
     let cart = this.state.cart;
     return cart.some(function(item) {
       return item.id === productID;
@@ -52,9 +48,7 @@ class App extends Component {
     let total = 0;
     let cart = this.state.cart;
     total = cart.length;
-    this.setState({
-      totalItems: total
-    });
+    this.setState({totalItems: total});
   }
 
   sumTotalAmount() {
@@ -63,42 +57,30 @@ class App extends Component {
     for (var i = 0; i < cart.length; i++) {
       total += cart[i].price * parseInt(cart[i].quantity);
     }
-    this.setState({
-      totalAmount: total
-    });
+    this.setState({totalAmount: total});
   }
 
-  handleRemoveProduct(id, e) {
+  addToCart(item) {
+    let cartItem = this.state.cart;
+    let productID = item.id;
+    if (this.checkProduct(productID)) { //if item already exists, increase quantity of this item in cart
+      let index = cartItem.findIndex(x => x.id === productID);
+      cartItem[index].quantity = Number(cartItem[index].quantity) + 1;
+      this.setState({cart: cartItem});
+    } else { //item doesn't already exist in cart, add to cart.
+      item.quantity = 1;
+      cartItem.push(item);
+    }
+    this.setState({cart: cartItem});
+    this.sumTotalItems(this.state.cart);
+    this.sumTotalAmount(this.state.cart);
+  }
+
+  removeProduct(id) {
     let cart = this.state.cart;
     let index = cart.findIndex(x => x.id === id);
     cart.splice(index, 1);
-    this.setState({
-      cart: cart
-    });
-    this.sumTotalItems(this.state.cart);
-    this.sumTotalAmount(this.state.cart);
-    e.preventDefault();
-  }
-
-  // Add to Cart
-  handleAddToCart(selectedProducts) {
-    let cartItem = this.state.cart;
-    let productID = selectedProducts.id;
-    if (this.checkProduct(productID)) {
-      console.log("hi");
-      let index = cartItem.findIndex(x => x.id === productID);
-      cartItem[index].quantity =
-        Number(cartItem[index].quantity) + 1;
-      this.setState({
-        cart: cartItem
-      });
-    } else {
-      selectedProducts.quantity = 1;
-      cartItem.push(selectedProducts);
-    }
-    this.setState({
-      cart: cartItem
-    });
+    this.setState({cart: cart});
     this.sumTotalItems(this.state.cart);
     this.sumTotalAmount(this.state.cart);
   }
@@ -112,15 +94,15 @@ class App extends Component {
         <FilteredList
         items={clothes}
         productsList={this.state.products}
-        addToCart={this.handleAddToCart}
+        addToCart={this.addToCart}
         productQuantity={this.state.quantity}
         updateQuantity={this.updateQuantity}
         />
-        <Cart
+        <Cart //cart list passes into Cart component
         total={this.state.totalAmount}
         totalItems={this.state.totalItems}
         cartItems={this.state.cart}
-        removeProduct={this.handleRemoveProduct}
+        removeProduct={this.removeProduct}
         updateQuantity={this.updateQuantity}
         productQuantity={this.state.moq}
         />

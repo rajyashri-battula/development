@@ -3,10 +3,10 @@ import './App.css';
 import Clothing from "./Clothing";
 
 class DisplayList extends Component {
-  render(){
-    const items = this.props.items.map(itm => {
+  render(){ //maps each product from App.js to an HTML element or Component for rendering purpose. Actually displays the item according to selected filters and sorting. 
+    const items = this.props.items.map(item => {
       return (<Clothing
-        item = {itm}
+        item = {item}
         addToCart={this.props.addToCart}
         />
         );
@@ -15,7 +15,10 @@ class DisplayList extends Component {
       return items;
     }
     else {
-      return (<div style={{ marginTop: "100px"}}><h2>There are no clothes available under these filters. Please broaden your search! </h2></div>);
+      return (<div style={{ marginTop: "100px"}}>
+      <h2>There are no clothes available under these filters. Please broaden your search!
+      </h2></div>
+      );
     }
   }
 }

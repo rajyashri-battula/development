@@ -1,3 +1,20 @@
+My README:
+
+My application closely follows the architecture recommended by the gearup slides. Accordingly, the following is my organization:
+- App.js file which contains the product list and passes it to FilteredList component, and contains the cart list and passes it to the Cart component. This class also handles the cart functions like add and remove, and renders the cart, it's scrollbar and its items.
+- FilteredList.js which contains the filtering and sorting methods.
+- DisplayList.js which maps each product from App.js to an HTML element or Component for render. This class uses the Clothing component which is stored in its own class.
+- Clothing.js which sets state in the add to cart function and renders each product in the product list, along with all its attributes, and the associated add to cart button.
+- Cart.js which has functions to handle scrolling of the cart, and renders each product in the cart (or an empty cart), and also the total aggregator.
+- App.css takes care of the styling for all the components in the app.
+
+In essence, App renders the product list and cart list (using FilteredList which in turn uses DisplayList which in turn uses Clothing, and Cart). The filtering, and sorting logic lies in FilteredList, while the aggregator logic lies in App. The logic for add and remove items also lies in App.  
+
+State is primarily changed when the user adds to cart, removes from cart, or when the total quantity or price of the cart changes. State also changes when the user filters or sorts the product data.
+
+--------------
+React README:
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

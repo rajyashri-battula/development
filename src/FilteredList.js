@@ -4,7 +4,7 @@ import DisplayList from './DisplayList';
 import './App.css';
 
 class FilteredList extends Component{
-	constructor(props){ //We will be keeping track of the selected size as a state. A state is a variable which is remembered when the component re-renders
+	constructor(props){ //Keeping track of state even with change caused by filter or sort.
 		super(props);
 		this.state = {
 			type: "All",
@@ -13,7 +13,7 @@ class FilteredList extends Component{
 		};
 	}
 
-	onFilterType = (event) => {
+	onFilterType = (event) => { //gearup slide recommended functions for filtering type and occasion and sort
 		this.setState({type: event});
 	}
 
@@ -47,7 +47,7 @@ class FilteredList extends Component{
 	    }
 	}
 
-  render(){
+  render(){ //renders filtering and sorting buttons, and calls the DisplayList component to render the relevant items
     return (
 			<div>
         <div className = "filter">
@@ -73,7 +73,8 @@ class FilteredList extends Component{
         </div>
 				<div className = "display-items">
 					<DisplayList
-					items={this.props.items.filter(this.filterItem).filter(this.filterOccasion).sort(this.sortPrice)} displayed = {this.props.items.filter(this.filterItem).filter(this.filterOccasion)}
+					items={this.props.items.filter(this.filterItem).filter(this.filterOccasion).sort(this.sortPrice)}
+					displayed = {this.props.items.filter(this.filterItem).filter(this.filterOccasion)}
 					addToCart={this.props.addToCart}
 					/>
 				</div>
